@@ -1,6 +1,6 @@
 // resolvers.js: Define the query and mutation functionality to work with the Mongoose models.
 const { AuthenticationError } = require('apollo-server-express')
-const { User} = require('../models')
+const { User, Listing } = require('../models')
 const { signToken } = require('../utils/auth');
 const { sign } = require('jsonwebtoken');
 
@@ -16,6 +16,49 @@ const resolvers = {
                 return User.findOne({ _id: context.user._id })
             }
             throw new AuthenticationError('You need to be logged in!')
+        },
+        listings: async () => {
+
+
+            return await Listing.find();
+        },
+        checkout: async (parent, args, context) => {
+            const url = new URL(context.headers.referer).origin;
+            const order = new Order({ listings: args.listings });
+            const line_items = [];
+
+            const { listings } = await order.populate('listings');
+
+            for (let i = 0; i < listings.length; i++) {
+                const listings = await stripe.listings.create({
+                    title: listings[i].title,
+                    description: listings[i].description,
+                    images: [`${url}/images/${listings[i].image}`]
+                });
+
+                //Images need to in public/images
+
+                const price = await stripe.prices.create({
+                    listing: listing.id,
+                    unit_amount: listings[i].price * 100,
+                    currency: 'usd',
+                });
+
+                line_items.push({
+                    price: price.id,
+                    quantity: 1
+                });
+            }
+
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items,
+                mode: 'payment',
+                success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${url}/`
+            });
+
+            return { session: session.id };
         }
     },
 
@@ -44,7 +87,18 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        
+        addOrder: async (parent, {listings}, context) => {
+            if (context.user) {
+              const order = new Order({listings });
+      
+              await User.findByIdAndUpdate(context.user._id, { $push: { orders: order } });
+      
+              return order;
+            }
+      
+            throw new AuthenticationError('Not logged in');
+          },
+
     }
 
 }
