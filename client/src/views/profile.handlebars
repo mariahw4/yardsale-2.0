@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-auto ms-1">
+    <h2>Welcome, {{name}}!</h2>
+  </div>
+</div>
+
+
+<div class="row mt-4 d-flex justify-content-center my-5">
+  <div class="col-8 text-center">
+    <h3>Create a New Listing:</h3>
+
+    <form class="form new-listing-form container m-0">
+      <div class="form-group my-3">
+        <label for="listing-title" class="form-label">Listing Title:</label>
+        <input class="form-input form-control" type="text" id="listing-title" name="listing-title" />
+      </div>
+      <div class="form-group my-3">
+        <label for="listing-price">Price:</label>
+        <input class="form-input form-control" type="number" id="listing-price" name="listing-price" />
+      </div>
+      <div class="form-group my-3">
+        <label for="listing-desc">Description:</label>
+        <textarea class="form-input form-control" id="listing-desc" name="listing-desc"></textarea>
+      </div>
+      <div method="POST" action="/profile" enctype="multipart/form-data" class="my-3"></div>
+      <input type="file" name="Image" id="file-input" accept="image/*" class="btn btn-warning col-12">
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary my-3">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<h3 class="text-center">Your Current Listings:</h3>
+
+{{#each listings as |listing| }}
+<div class="container-fluid d-flex justify-content-center col-8";>
+  <div class="card flex-fill mb-3">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <a href="/api/listings/{{listing.id}}"><img src="{{listing.image}}" class="img-fluid rounded-start object-fit mx-auto d-block"
+            alt=></a>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <a href="/api/listings/{{listing.id}}">
+            <h5 class="card-title">{{listing.title}}</h5>
+          </a>
+
+          {{!-- Show price or SOLD depending on listing.sold --}}
+          {{#if listing.sold}}
+          <h6 class="text-danger font-weight-bold">SOLD</h6>
+          {{else}}
+          <h6>${{listing.price}}</h6>
+          {{/if}}
+
+          <p class="card-text">{{listing.description}}</p>
+          <p class="card-text"><small class="text-muted">Posted on {{format_date listing.date_created}}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{/each}}
+
+
+<script src="/js/profile.js"></script>
