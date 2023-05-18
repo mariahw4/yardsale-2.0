@@ -1,5 +1,5 @@
 const User = require("./User");
-// const Listing = require("./Listing");
+const Listing = require("./Listing");
 // const Comment = require("./Comment");
 
 // User.hasMany(Listing, {
@@ -29,4 +29,7 @@ const User = require("./User");
 // });
 
 
-module.exports = { User };
+module.exports = { 
+  User,
+  Listing
+   };
