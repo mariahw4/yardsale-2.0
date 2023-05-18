@@ -1,4 +1,4 @@
-// const User = require("./User");
+const User = require("./User");
 // const Listing = require("./Listing");
 // const Comment = require("./Comment");
 
@@ -29,4 +29,4 @@
 // });
 
 
-// module.exports = { User, Listing, Comment };
+module.exports = { User };
