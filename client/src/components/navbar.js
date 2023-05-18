@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
-import Signup from './signup';
-import Login from './login';
+import Signup from './Signup';
+import Login from './Login';
 
 import Auth from '../utils/auth';
+
+// changed react compenent file names to capitals
 
 const AppNavbar = () => {
   // set modal display state
