@@ -44,55 +44,7 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-
-        saveBook: async (parent, { bookData }, context) => {
-
-            if (context.user) {
-                const user = await User.findOneAndUpdate(
-                    { _id: context.user._id },
-                    {
-                        $addToSet: {
-                            // push to savedbooks array (input holds all of the book info)
-                            savedBooks: bookData
-                        }
-                    },
-                    {
-                        new: true,
-                        runValidators: true,
-                    },
-                );
-                return user;
-            }
-
-            throw new AuthenticationError('You need to be logged in!')
-
-        },
-
-        // cant perform query's on a schema
-        removeBook: async (parent, { bookId }, context) => {
-
-            if (context.user) {
-                const user = await User.findOneAndUpdate(
-                    { _id: context.user._id },
-
-                    { $pull: { savedBooks: { bookId } } },
-                
-                   {
-                        new: true,
-                        runValidators: true,
-                    },
-
-                );
-
-
-
-                return user;
-            }
-
-            throw new AuthenticationError('You need to be logged in!')
-
-        }
-
+        
     }
 
 }

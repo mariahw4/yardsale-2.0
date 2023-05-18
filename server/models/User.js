@@ -1,61 +1,57 @@
-const { Model, DataTypes } = require("sequelize");
-const bcrypt = require("bcrypt");
-const sequelize = require("../config/connection");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
 
-class User extends Model {
-  checkPassword(loginPw) {
-    return bcrypt.compareSync(loginPw, this.password);
-  }
-}
+// import schema from Book.js
+// const bookSchema = require('./Book');
 
-User.init(
+const userSchema = new Schema(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [8],
-      },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
     },
     email: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      required: true,
       unique: true,
-      validate: {
-        isEmail: true,
-      },
+      match: [/.+@.+\..+/, 'Must use a valid email address'],
     },
+    password: {
+      type: String,
+      required: true,
+    },
+    // set savedBooks to be an array of data that adheres to the bookSchema
+    // savedBooks: [bookSchema],
   },
+  // set this to use virtual below
   {
-    hooks: {
-      beforeCreate: async (newUserData) => {
-        newUserData.password = await bcrypt.hash(newUserData.password, 10);
-        return newUserData;
-      },
-      beforeUpdate: async (updatedUserData) => {
-        updatedUserData.password = await bcrypt.hash(
-          updatedUserData.password,
-          10
-        );
-        return updatedUserData;
-      },
+    toJSON: {
+      virtuals: true,
     },
-    sequelize,
-    timestamps: false,
-    freezeTableName: true,
-    underscored: true,
-    modelName: "user",
   }
 );
+
+// hash user password
+userSchema.pre('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+
+  next();
+});
+
+// custom method to compare and validate password for logging in
+userSchema.methods.isCorrectPassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
+// when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
+// userSchema.virtual('bookCount').get(function () {
+//   return this.savedBooks.length;
+// });
+
+const User = model('User', userSchema);
 
 module.exports = User;
