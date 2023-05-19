@@ -58,7 +58,7 @@ function Profile() {
             <div>
                 <div className="row">
                     <div className="col-auto ms-1">
-                        <h2>Welcome, {data.username}!</h2>
+                        <h2>Welcome, {data?.username}!</h2>
                     </div>
                 </div>
 
