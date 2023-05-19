@@ -7,8 +7,9 @@
 //     // format large numbers with commas
 //     return parseInt(amount).toLocaleString();
 //   }},
-export function format_date(date) {
-    return date.toLocaleDateString();
+
+export default function formatDate(date) {
+    return new Date(date).toLocaleDateString();
 }
 
 export function pluralize(title, count) {

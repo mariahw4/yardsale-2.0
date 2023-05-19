@@ -38,7 +38,7 @@
 //     .addEventListener('submit', newFormHandler);
 
 import React from "react";
-import format_date from "../utils/helpers";
+import formatDate from "../utils/helpers";
 
 function Profile() {
     return (
@@ -153,7 +153,7 @@ function Profile() {
                                         <p className="card-text">
                                             <small className="text-muted">
                                                 Posted on{" "}
-                                                {format_date(
+                                                {formatDate(
                                                     listing.date_created
                                                 )}
                                             </small>

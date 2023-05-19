@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
-
-import { GET_LISTING } from "../utils/queries";
-import Auth from "../utils/auth";
+import ListingItem from '../components/ListingItem';
+import { useStoreContext } from '../utils/GlobalState';
 import { useQuery } from "@apollo/client";
-import format_date from "../utils/helpers";
+import { GET_LISTINGS } from "../utils/queries";
+import { idbPromise } from '../utils/helpers';
 
-const HomepageHandler = (event) => {
-    const [getListing, { error }] = useQuery(GET_LISTING);
+import Auth from "../utils/auth";
+import formatDate from "../utils/helpers";
+
+function HomepageHandler() {
+    // const [ state, dispatch ] = useStoreContext();
+    const { loading, data }  = useQuery(GET_LISTINGS)
+    console.log(data)
+    
+
+   
+
+// setHomeListings(listingData)
+
     // const [showAlert, setShowAlert] = useState(false);
     // useEffect(() => {
     //     if (error) {
@@ -17,12 +28,15 @@ const HomepageHandler = (event) => {
     //     }
     // }, [error]);
 
+   const listings = []
+
     return (
         <>
-            {listings.map((listing) => (
+            {data?.listings.length > 0 && data.listings?.map((listing) => (
                 <div
                     className="container-fluid d-flex justify-content-center"
                     style={{ width: "100%" }}
+                    key={listing._id}
                 >
                     <div
                         className="card mb-3 col-7 my-3"
@@ -58,8 +72,8 @@ const HomepageHandler = (event) => {
                                     </p>
                                     <p className="card-text">
                                         <small className="text-muted">
-                                            Posted by {listing.user.name} on{" "}
-                                            {format_date(listing.date_created)}
+                                            Posted by {listing.user?.username} on{" "}
+                                            {formatDate(listing.date_created)}
                                         </small>
                                     </p>
                                 </div>

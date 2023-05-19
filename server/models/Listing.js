@@ -4,12 +4,7 @@ const { Schema, model } = require("mongoose");
 // class Listing extends Model {}
 
 const listingSchema = new Schema ({ 
-  id: {
-    type: Number,
-    required: true,
-    // primaryKey: true,
-    autoIncrement: true,
-  },
+  
   title: {
     type: String,
     required: true,
@@ -28,8 +23,8 @@ const listingSchema = new Schema ({
   },
   date_created: {
     type: Date,
-    required: true,
-    // defaultValue: Now,
+    required: false,
+    default: Date.now,
   },
   user_id: {
     type: Number,
@@ -40,7 +35,7 @@ const listingSchema = new Schema ({
   },
   sold: {
     type: Boolean,
-    defaultValue: false,
+    default: false,
   },
     // id: {
     //   type: DataTypes.INTEGER,

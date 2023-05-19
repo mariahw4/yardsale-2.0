@@ -18,6 +18,8 @@ const typeDefs = gql`
     listings: [Listing]
   }
 
+  scalar Date 
+
   type Listing {
     _id: ID
     title: String
@@ -25,6 +27,7 @@ const typeDefs = gql`
     image: String
     quantity: Int
     price: Float
+    date_created: Date
     
   }
 
