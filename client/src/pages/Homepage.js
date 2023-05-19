@@ -4,18 +4,48 @@ import { useStoreContext } from '../utils/GlobalState';
 import { useQuery } from "@apollo/client";
 import { GET_LISTINGS } from "../utils/queries";
 import { idbPromise } from '../utils/helpers';
-
+import { UPDATE_LISTINGS } from "../utils/actions";
+import spinner from '../assets/spinner.gif'
+import Cart from '../components/Cart'
 import Auth from "../utils/auth";
 import formatDate from "../utils/helpers";
 
 function HomepageHandler() {
-    // const [ state, dispatch ] = useStoreContext();
-    const { loading, data }  = useQuery(GET_LISTINGS)
+    const [ state, dispatch ] = useStoreContext();
+    const { loading, data, error }  = useQuery(GET_LISTINGS)
     console.log(data)
-    
+   
+    // const [state, dispatch] = useStoreContext();
 
    
 
+  
+
+  useEffect(() => {
+    console.log('test');
+    if (data) {
+        console.log(data);
+      dispatch({
+        type: UPDATE_LISTINGS,
+        listings: data.listings,
+      });
+      data.listings.forEach((listing) => {
+        idbPromise('listings', 'put', listing);
+      });
+    } else if (!loading) {
+      idbPromise('listings', 'get').then((listings) => {
+        dispatch({
+          type: UPDATE_LISTINGS,
+          listings: listings,
+        });
+      });
+    }
+  }, [data, loading, dispatch]);
+   
+  if (error) {
+    console.log(error);
+    return <div>Error!</div>;
+  }
 // setHomeListings(listingData)
 
     // const [showAlert, setShowAlert] = useState(false);
@@ -32,56 +62,27 @@ function HomepageHandler() {
 
     return (
         <>
-            {data?.listings.length > 0 && data.listings?.map((listing) => (
-                <div
-                    className="container-fluid d-flex justify-content-center"
-                    style={{ width: "100%" }}
-                    key={listing._id}
-                >
-                    <div
-                        className="card mb-3 col-7 my-3"
-                        style={{ maxWidth: "70%" }}
-                    >
-                        <div className="row g-0">
-                            <div className="col-md-4">
-                                <img
-                                    src={listing.image}
-                                    className="img-fluid rounded-start object-fit mx-auto d-block"
-                                    alt=""
-                                />
-                            </div>
-                            <div className="col-md-8">
-                                <div className="card-body">
-                                    <a href={`/api/listings/${listing.id}`}>
-                                        <h5 className="card-title">
-                                            {listing.title}
-                                        </h5>
-                                    </a>
-
-                                    {/* Show price or SOLD depending on listing.sold */}
-                                    {listing.sold ? (
-                                        <h6 className="text-danger font-weight-bold">
-                                            SOLD
-                                        </h6>
-                                    ) : (
-                                        <h6>${listing.price}</h6>
-                                    )}
-
-                                    <p className="card-text">
-                                        {listing.description}
-                                    </p>
-                                    <p className="card-text">
-                                        <small className="text-muted">
-                                            Posted by {listing.user?.username} on{" "}
-                                            {formatDate(listing.date_created)}
-                                        </small>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            ))}
+            <div className="my-2">
+                <Cart/>
+      <h2>Our Products:</h2>
+      {state.listings.length ? (
+        <div className="flex-row">
+          {state.listings.map((listing) => (
+            <ListingItem
+              key={listing._id}
+              _id={listing._id}
+              image={listing.image}
+              name={listing.name}
+              price={listing.price}
+              quantity={listing.quantity}
+            />
+          ))}
+        </div>
+      ) : (
+        <h3>You haven't added any products yet!</h3>
+      )}
+      {loading ? <img src={spinner} alt="loading" /> : null}
+    </div>
         </>
     );
 };

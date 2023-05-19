@@ -47,7 +47,7 @@ const LoginFormHandler =  (event) => {
       console.log(data);
       Auth.login(data.loginUser.token);
     } catch (e) {
-      console.error(e);
+      console.error(e.message);
     }
 
     setUserFormData({
