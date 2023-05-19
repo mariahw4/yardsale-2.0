@@ -33,7 +33,7 @@ function ListingItem(item) {
     } else {
       dispatch({
         type: ADD_TO_CART,
-        product: { ...item, purchaseQuantity: 1 }
+        listing: { ...item, purchaseQuantity: 1 }
       });
       idbPromise('cart', 'put', { ...item, purchaseQuantity: 1 });
     }
@@ -41,7 +41,7 @@ function ListingItem(item) {
 
   return (
     <div className="card px-1 py-1">
-      <Link to={`/products/${_id}`}>
+      <Link to={`/listings/${_id}`}>
         {/* For individual page Detail.js */}
         <img
           alt={title}
