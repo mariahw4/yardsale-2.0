@@ -7,19 +7,20 @@ export const GET_ME = gql`
       username
       email
     }
-
-    
   }
 `;
 
-export const GET_LISTING = gql`
-  listing {
-    _id
-    title
-    description
-    image
-    quantity
-    price
+export const GET_LISTINGS = gql`
+  {
+    listings {
+      _id
+      title
+      description
+      image
+      quantity
+      price
+      date_created
+  }
 }`
 
 export const QUERY_CHECKOUT = gql`

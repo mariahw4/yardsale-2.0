@@ -1,26 +1,18 @@
-// const sequelize = require("../config/connection");
-// const { User, Listing } = require("../models");
+const { User, Listing } = require("../models");
+const db = require('../config/connection')
 
-// const userData = require("./userData.json");
-// const listingData = require("./listingData.json");
+const userData = require("./userData.json");
+const listingData = require("./listingData.json");
 
-// const seedDatabase = async () => {
-//   await sequelize.sync({ force: true });
+db.once('open', async () => {
 
-//   const users = await User.bulkCreate(userData, {
-//     individualHooks: true,
-//     returning: true,
-//   });
+    await User.deleteMany();
+    await Listing.deleteMany();
 
-//   // Generate random user_ids for listing seeds
-//   for (const listing of listingData) {
-//     await Listing.create({
-//       ...listing,
-//       user_id: users[Math.floor(Math.random() * users.length)].id,
-//     });
-//   }
 
-//   process.exit(0);
-// };
+    await Listing.insertMany(listingData)
+    await User.insertMany(userData)
+    process.exit(0);
+});
 
-// seedDatabase();
+
