@@ -1,36 +1,73 @@
-const { Model, DataTypes } = require("mongoose");
+const { Schema, model } = require("mongoose");
 // const sequelize = require("../config/connection");
 
-class Listing extends Model {}
+// class Listing extends Model {}
 
-Listing.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
+const listingSchema = new Schema ({ 
+  id: {
+    type: Number,
+    required: true,
+    // primaryKey: true,
+    autoIncrement: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  image: {
+    type: String,
+    // required: true,
+  },
+  date_created: {
+    type: Date,
+    required: true,
+    // defaultValue: Now,
+  },
+  user_id: {
+    type: Number,
+    references: {
+      model: "user",
+      key: "id",
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    price: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    image: {
-      type: DataTypes.STRING(100),
-      // allowNull: false,
-    },
-    quantity: {
-      type: DataTypes.INTEGER,
-      defaultValue: 1
-    },
+  },
+  sold: {
+    type: Boolean,
+    defaultValue: false,
+  },
+    // id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   primaryKey: true,
+    //   autoIncrement: true,
+    // },
+    // title: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // description: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    // price: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
+    // image: {
+    //   type: DataTypes.STRING(100),
+    //   // allowNull: false,
+    // },
+    // quantity: {
+    //   type: DataTypes.INTEGER,
+    //   defaultValue: 1
+    // },
     // date_created: {
     //   type: DataTypes.DATE,
     //   allowNull: false,
@@ -49,12 +86,13 @@ Listing.init(
     // },
   },
   {
-    sequelize,
-    timestamps: false,
-    freezeTableName: true,
-    underscored: true,
-    modelName: "Listing",
+    // sequelize,
+    // timestamps: false,
+    // freezeTableName: true,
+    // underscored: true,
+    // modelName: "Listing",
   }
 );
 
+const Listing = model ('Listing', listingSchema)
 module.exports = Listing;
