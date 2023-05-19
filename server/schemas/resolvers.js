@@ -17,11 +17,13 @@ const resolvers = {
             }
             throw new AuthenticationError('You need to be logged in!')
         },
+
         listings: async () => {
 
 
             return await Listing.find();
         },
+        
         checkout: async (parent, args, context) => {
             const url = new URL(context.headers.referer).origin;
             const order = new Order({ listings: args.listings });
@@ -64,6 +66,13 @@ const resolvers = {
 
     Mutation: {
         // Create user
+        addListing: async (parent, args, context) => {
+            if (context.user) {
+                const listing = new Listing({args})
+                await User.findOneAndUpdate(context.user._id, {$push: {listings: listing}}) 
+                return listing
+            }
+        },
         addUser: async (parent, args) => {
             const user = await User.create(args)
             const token = signToken(user);
