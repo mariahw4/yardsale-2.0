@@ -10,6 +10,7 @@ import HomepageHandler from "./pages/Homepage";
 import Profile from "./pages/Profile";
 import Navbar from "./components/NavigationBar";
 import { setContext } from "@apollo/client/link/context";
+import { StoreProvider } from "./utils/GlobalState";
 
 // / Construct our main GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -62,6 +63,7 @@ function App() {
         <ApolloProvider client={client}>
             <Router>
                 <>
+                <StoreProvider>
                     <Navbar />
                     <Switch>
                         <Route exact path="/" component={HomepageHandler} />
@@ -72,6 +74,7 @@ function App() {
                             )}
                         />
                     </Switch>
+                    </StoreProvider>
                 </>
             </Router>
         </ApolloProvider>

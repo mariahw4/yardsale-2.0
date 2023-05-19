@@ -4,6 +4,8 @@ import { pluralize } from "../utils/helpers"
 import { useStoreContext } from "../utils/GlobalState";
 import { ADD_TO_CART, UPDATE_CART_QUANTITY } from "../utils/actions";
 import { idbPromise } from "../utils/helpers";
+import Auth from "../utils/auth";
+import formatDate from "../utils/helpers";
 
 function ListingItem(item) {
   const [state, dispatch] = useStoreContext();
@@ -13,6 +15,9 @@ function ListingItem(item) {
     title,
     _id,
     price,
+    description,
+    date_created,
+    sold,
     quantity
   } = item;
 
@@ -40,21 +45,55 @@ function ListingItem(item) {
   }
 
   return (
-    <div className="card px-1 py-1">
-      <Link to={`/listings/${_id}`}>
-        {/* For individual page Detail.js */}
-        <img
-          alt={title}
-          src={`/images/${image}`}
-        />
-        <p>{title}</p>
-      </Link>
-      <div>
-        <div>{quantity} {pluralize("item", quantity)} in stock</div>
-        <span>${price}</span>
-      </div>
-      <button onClick={addToCart}>Add to cart</button>
+    <div
+    className="container-fluid d-flex justify-content-center"
+    style={{ width: "100%" }}
+    key={_id}
+>
+    <div
+        className="card mb-3 col-7 my-3"
+        style={{ maxWidth: "70%" }}
+    >
+        <div className="row g-0">
+            <div className="col-md-4">
+                <img
+                    src={image}
+                    className="img-fluid rounded-start object-fit mx-auto d-block"
+                    alt=""
+                />
+            </div>
+            <div className="col-md-8">
+                <div className="card-body">
+                    <a href={`/api/listings/${_id}`}>
+                        <h5 className="card-title">
+                            {title}
+                        </h5>
+                    </a>
+
+                    {/* Show price or SOLD depending on sold */}
+                    {sold ? (
+                        <h6 className="text-danger font-weight-bold">
+                            SOLD
+                        </h6>
+                    ) : (
+                        <h6>${price}</h6>
+                    )}
+
+                    <p className="card-text">
+                        {description}
+                    </p>
+                    <p className="card-text">
+                        {/* <small className="text-muted">
+                            Posted by {user?.username} on{" "}
+                            {formatDate(date_created)}
+                        </small> */}
+                    </p>
+                    <button onClick={addToCart}>Add to cart</button>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
   );
 }
 
