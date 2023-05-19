@@ -31,7 +31,3 @@ export const QUERY_CHECKOUT = gql`
   }
 `
 
-export const ADD_LISTING = gql`
-mutation addListing($listings: [ID]!) {
-  addListing(listings: $listings)
-}`;
