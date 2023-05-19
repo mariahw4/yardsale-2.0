@@ -7,59 +7,62 @@
 //     // format large numbers with commas
 //     return parseInt(amount).toLocaleString();
 //   }},
-export function pluralize(title, count) {
-  if (count === 1) {
-    return title;
-  }
-  return title + 's';
+export function format_date(date) {
+    return date.toLocaleDateString();
 }
 
-  export function idbPromise(storeName, method, object) {
+export function pluralize(title, count) {
+    if (count === 1) {
+        return title;
+    }
+    return title + "s";
+}
+
+export function idbPromise(storeName, method, object) {
     return new Promise((resolve, reject) => {
-      const request = window.indexedDB.open('shop-shop', 1);
-      let db, tx, store;
-      request.onupgradeneeded = function(e) {
-        const db = request.result;
-        db.createObjectStore('listings', { keyPath: '_id' });
-        db.createObjectStore('cart', { keyPath: '_id' });
-      };
-  
-      request.onerror = function(e) {
-        console.log('There was an error');
-      };
-  
-      request.onsuccess = function(e) {
-        db = request.result;
-        tx = db.transaction(storeName, 'readwrite');
-        store = tx.objectStore(storeName);
-  
-        db.onerror = function(e) {
-          console.log('error', e);
+        const request = window.indexedDB.open("shop-shop", 1);
+        let db, tx, store;
+        request.onupgradeneeded = function (e) {
+            const db = request.result;
+            db.createObjectStore("listings", { keyPath: "_id" });
+            db.createObjectStore("cart", { keyPath: "_id" });
         };
-  
-        switch (method) {
-          case 'put':
-            store.put(object);
-            resolve(object);
-            break;
-          case 'get':
-            const all = store.getAll();
-            all.onsuccess = function() {
-              resolve(all.result);
+
+        request.onerror = function (e) {
+            console.log("There was an error");
+        };
+
+        request.onsuccess = function (e) {
+            db = request.result;
+            tx = db.transaction(storeName, "readwrite");
+            store = tx.objectStore(storeName);
+
+            db.onerror = function (e) {
+                console.log("error", e);
             };
-            break;
-          case 'delete':
-            store.delete(object._id);
-            break;
-          default:
-            console.log('No valid method');
-            break;
-        }
-  
-        tx.oncomplete = function() {
-          db.close();
+
+            switch (method) {
+                case "put":
+                    store.put(object);
+                    resolve(object);
+                    break;
+                case "get":
+                    const all = store.getAll();
+                    all.onsuccess = function () {
+                        resolve(all.result);
+                    };
+                    break;
+                case "delete":
+                    store.delete(object._id);
+                    break;
+                default:
+                    console.log("No valid method");
+                    break;
+            }
+
+            tx.oncomplete = function () {
+                db.close();
+            };
         };
-      };
     });
-  }
-  
+}
