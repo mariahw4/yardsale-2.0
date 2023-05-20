@@ -7,6 +7,17 @@ const typeDefs = gql`
     email: String!
   }
 
+  type Listing {
+    id: INT
+    title: String!
+    description: String!
+    price: INT!
+    image: String
+    date_created: Date!
+    user: User
+    sold: Boolean!
+  }
+
   type Auth {
     token: ID!
     user: User

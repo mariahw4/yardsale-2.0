@@ -1,8 +1,9 @@
 // resolvers.js: Define the query and mutation functionality to work with the Mongoose models.
 const { AuthenticationError } = require('apollo-server-express')
-const { User, Listing } = require('../models')
+const { User, Listing} = require('../models')
 const { signToken } = require('../utils/auth');
 const { sign } = require('jsonwebtoken');
+
 
 // HINT
 // Use the functionality in the user-controller.js as a guide.
@@ -10,6 +11,8 @@ const { sign } = require('jsonwebtoken');
 const resolvers = {
 
     Query: {
+
+
         me: async (parent, args, context) => {
             if (context.user) {
 
@@ -62,6 +65,7 @@ const resolvers = {
 
             return { session: session.id };
         }
+        
     },
 
     Mutation: {
