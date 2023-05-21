@@ -72,7 +72,8 @@ function HomepageHandler() {
               key={listing._id}
               _id={listing._id}
               image={listing.image}
-              name={listing.name}
+              title={listing.title}
+              description={listing.description}
               price={listing.price}
               quantity={listing.quantity}
             />
