@@ -1,3 +1,7 @@
+.checkout {
+  border-radius: 5px;
+}
+
 .cart {
   position: fixed;
   top: 0;
@@ -10,7 +14,7 @@
   padding: .5rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, .5);
   border-bottom-left-radius: .5rem;
-  margin-top: 47px;
+  margin-top: 50px;
 }
 
 .cart h2 {
@@ -38,9 +42,11 @@
   right: 1%;
   font-size: 2rem;
   cursor: pointer;
-  background-color: var(--secondary);
+  background-color: orange;
   border-radius: 50%;
   padding: .25rem;
+  padding: 0 0 1px 9px;
+  margin-top: 50px;
   width: 50px;
   height: 50px;
 }
@@ -73,4 +79,10 @@
     position: relative;
     margin: 0 auto;
   }
+
+  
 }
+
+.space {
+    margin: 0 10px 0 10px;
+  }
