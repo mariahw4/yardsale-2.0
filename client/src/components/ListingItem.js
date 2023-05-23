@@ -64,11 +64,11 @@ function ListingItem(item) {
             </div>
             <div className="col-md-8">
                 <div className="card-body">
-                    <a href={`/api/listings/${_id}`}>
+                    {/* <a href={`/api/listings/${_id}`}> */}
                         <h5 className="card-title">
                             {title}
                         </h5>
-                    </a>
+                    {/* </a> */}
 
                     {/* Show price or SOLD depending on sold */}
                     {sold ? (
