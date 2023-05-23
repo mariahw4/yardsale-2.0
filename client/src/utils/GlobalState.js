@@ -9,7 +9,7 @@ const StoreProvider = ({ value = [], ...props }) => {
     listings: [],
     cart: [],
     cartOpen: false,
-    // categories: [],
+    // users: [],
     // currentCategory: '',
   });
 
