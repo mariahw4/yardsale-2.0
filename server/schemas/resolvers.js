@@ -67,12 +67,13 @@ const resolvers = {
 
     Mutation: {
         // Create user
-        addListing: async (parent, args, context) => {
-            if (context.user) {
-                const listing = new Listing({args})
-                await User.findOneAndUpdate(context.user._id, {$push: {listings: listing}}) 
+        addListing: async (parent, {newListing}, context) => {
+            console.log(context.user);
+            // if (context.user) {
+                const listing = Listing.create(newListing)
+                // await User.findByIdAndUpdate(context.user._id, {$push: {listings: listing._id}}) 
                 return listing
-            }
+            // }
         },
         addUser: async (parent, args) => {
             const user = await User.create(args)
