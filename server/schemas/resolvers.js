@@ -11,7 +11,7 @@ const stripe = require('stripe')('sk_test_51N8oPZGvqFuPYelvE6eMtck6VhzFo5ZWNb2Of
 const resolvers = {
 
     Query: {
-        me: async (parent, args, context) => {
+        user: async (parent, args, context) => {
             if (context.user) {
 
                 return User.findOne({ _id: context.user._id })

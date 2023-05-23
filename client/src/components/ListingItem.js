@@ -18,7 +18,8 @@ function ListingItem(item) {
     description,
     date_created,
     sold,
-    quantity
+    quantity,
+    username
   } = item;
 
   const { cart } = state
@@ -83,10 +84,10 @@ function ListingItem(item) {
                         {description}
                     </p>
                     <p className="card-text">
-                        {/* <small className="text-muted">
-                            Posted by {user?.username} on{" "}
+                        <small className="text-muted">
+                            Posted by {username} on{" "}
                             {formatDate(date_created)}
-                        </small> */}
+                        </small>
                     </p>
                     <button onClick={addToCart}>Add to cart</button>
                 </div>

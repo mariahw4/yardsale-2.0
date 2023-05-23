@@ -26,8 +26,8 @@ const listingSchema = new Schema ({
     required: false,
     default: Date.now,
   },
-  user_id: {
-    type: Number,
+  user: {
+    type: Schema.Types.ObjectId,
     references: {
       model: "user",
       key: "id",

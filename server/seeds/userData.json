@@ -1,8 +1,8 @@
 [
     {
-        "username": "Christopher",
-        "email": "Chris@hotmail.com",
-        "password": "C1234567"
+        "username": "Jordy",
+        "email": "Jordy@hotmail.com",
+        "password": "J1234567"
     },
     {
         "username": "Mariah",
@@ -10,13 +10,18 @@
         "password": "M1234567"
     },
     {
-        "username": "David",
-        "email": "David@aol.com",
+        "username": "Dave",
+        "email": "Dave@aol.com",
         "password": "D1234567"
     },
     {
-        "username": "Joseph",
-        "email": "Joseph@aol.com",
-        "password": "J1234567"
+        "username": "Rances",
+        "email": "Rances@aol.com",
+        "password": "R1234567"
+    },
+    {
+        "username": "Sam",
+        "email": "Sam@aol.com",
+        "password": "S1234567"
     }
 ]

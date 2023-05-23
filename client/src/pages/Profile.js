@@ -40,7 +40,7 @@
 import React from "react";
 import formatDate from "../utils/helpers";
 import { useQuery } from "@apollo/client";
-import { GET_LISTINGS } from "../utils/queries";
+import { GET_USER } from "../utils/queries";
 import { ADD_LISTING } from "../utils/mutations";
 import Auth from "../utils/auth";
 
@@ -48,8 +48,10 @@ import Auth from "../utils/auth";
 
 
 function Profile() {
-    const { loading, data }  = useQuery(GET_LISTINGS)
-    console.log(data)
+    const { loading, data }  = useQuery(GET_USER)
+
+  const userData = data?.user || {};
+    console.log(userData)
     
     const listings = []
 
@@ -58,7 +60,7 @@ function Profile() {
             <div>
                 <div className="row">
                     <div className="col-auto ms-1">
-                        <h2>Welcome, {data?.username}!</h2>
+                        <h2>Welcome, {userData?.username}!</h2>
                     </div>
                 </div>
 
@@ -127,7 +129,7 @@ function Profile() {
 
                 <h3 className="text-center">Your Current Listings:</h3>
 
-                {data?.listings.length >0 && data?.listings.map((listing) => (
+                {userData?.listings.length >0 && userData?.listings.map((listing) => (
                     <div
                         key={listing.id}
                         className="container-fluid d-flex justify-content-center col-8"
