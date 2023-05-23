@@ -1,6 +1,6 @@
 // resolvers.js: Define the query and mutation functionality to work with the Mongoose models.
 const { AuthenticationError } = require('apollo-server-express')
-const { User, Listing } = require('../models')
+const { User, Listing, Order } = require('../models')
 const { signToken } = require('../utils/auth');
 const { sign } = require('jsonwebtoken');
 
@@ -32,7 +32,7 @@ const resolvers = {
             const { listings } = await order.populate('listings');
 
             for (let i = 0; i < listings.length; i++) {
-                const listings = await stripe.listings.create({
+                const listing = await stripe.listings.create({
                     title: listings[i].title,
                     description: listings[i].description,
                     images: [`${url}/images/${listings[i].image}`]
