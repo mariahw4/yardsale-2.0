@@ -3,6 +3,7 @@ const { AuthenticationError } = require('apollo-server-express')
 const { User, Listing, Order } = require('../models')
 const { signToken } = require('../utils/auth');
 const { sign } = require('jsonwebtoken');
+const stripe = require('stripe')('sk_test_51N8oPZGvqFuPYelvE6eMtck6VhzFo5ZWNb2OfbwLUskyZCeGF7Ii2z9ydScJISQXRNZmKQV3eqzORZQlYKAgAWvl00bAHTknrH');
 
 // HINT
 // Use the functionality in the user-controller.js as a guide.
@@ -32,8 +33,8 @@ const resolvers = {
             const { listings } = await order.populate('listings');
 
             for (let i = 0; i < listings.length; i++) {
-                const listing = await stripe.listings.create({
-                    title: listings[i].title,
+                const listing = await stripe.products.create({
+                    name: listings[i].title,
                     description: listings[i].description,
                     images: [`${url}/images/${listings[i].image}`]
                 });
@@ -41,7 +42,7 @@ const resolvers = {
                 //Images need to in public/images
 
                 const price = await stripe.prices.create({
-                    listing: listing.id,
+                    product: listing.id,
                     unit_amount: listings[i].price * 100,
                     currency: 'usd',
                 });
