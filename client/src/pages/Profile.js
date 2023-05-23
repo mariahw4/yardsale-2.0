@@ -135,21 +135,21 @@ function Profile() {
                         <div className="card flex-fill mb-3">
                             <div className="row g-0">
                                 <div className="col-md-4">
-                                    <a href={`/api/listings/${listing.id}`}>
+                                    {/* <a href={`/api/listings/${listing.id}`}> */}
                                         <img
                                             src={listing.image}
                                             className="img-fluid rounded-start object-fit mx-auto d-block"
                                             alt=""
                                         />
-                                    </a>
+                                    {/* </a> */}
                                 </div>
                                 <div className="col-md-8">
                                     <div className="card-body">
-                                        <a href={`/api/listings/${listing.id}`}>
+                                        {/* <a href={`/api/listings/${listing.id}`}> */}
                                             <h5 className="card-title">
                                                 {listing.title}
                                             </h5>
-                                        </a>
+                                        {/* </a> */}
 
                                         {listing.sold ? (
                                             <h6 className="text-danger font-weight-bold">
