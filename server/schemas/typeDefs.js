@@ -31,6 +31,13 @@ const typeDefs = gql`
     
   }
 
+  input ListingInput {
+    title: String
+    description: String
+    image: String
+    price: Float
+  }
+
   type Checkout {
     session: ID
   }
@@ -44,7 +51,7 @@ const typeDefs = gql`
   type Mutation {
     loginUser(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    addListing(listings:[ID]! ): Listing
+    addListing(newListing: ListingInput! ): Listing
     addOrder(listings: [ID]!): Order
   }
 
