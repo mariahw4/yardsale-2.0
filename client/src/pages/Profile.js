@@ -40,7 +40,7 @@ import { useStoreContext } from '../utils/GlobalState';
 import React, { useEffect, useState } from "react";
 import formatDate from "../utils/helpers";
 import { useQuery, useMutation } from "@apollo/client";
-// import { GET_LISTINGS } from "../utils/queries";
+import { GET_LISTINGS } from "../utils/queries";
 import { ADD_LISTING } from "../utils/mutations";
 import Auth from "../utils/auth";
 import { idbPromise } from '../utils/helpers';
