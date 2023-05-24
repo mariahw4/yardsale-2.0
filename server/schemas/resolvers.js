@@ -1,116 +1,114 @@
 // resolvers.js: Define the query and mutation functionality to work with the Mongoose models.
-const { AuthenticationError } = require('apollo-server-express')
-const { User, Listing, Order } = require('../models')
-const { signToken } = require('../utils/auth');
-const { sign } = require('jsonwebtoken');
-const stripe = require('stripe')('sk_test_51N8oPZGvqFuPYelvE6eMtck6VhzFo5ZWNb2OfbwLUskyZCeGF7Ii2z9ydScJISQXRNZmKQV3eqzORZQlYKAgAWvl00bAHTknrH');
+const { AuthenticationError } = require("apollo-server-express");
+const { User, Listing, Order } = require("../models");
+const { signToken } = require("../utils/auth");
+const { sign } = require("jsonwebtoken");
+const stripe = require("stripe")(
+  "sk_test_51N8oPZGvqFuPYelvE6eMtck6VhzFo5ZWNb2OfbwLUskyZCeGF7Ii2z9ydScJISQXRNZmKQV3eqzORZQlYKAgAWvl00bAHTknrH"
+);
 
 // HINT
 // Use the functionality in the user-controller.js as a guide.
 
 const resolvers = {
-
-    Query: {
-        user: async (parent, args, context) => {
-            if (context.user) {
-
-                return User.findOne({ _id: context.user._id })
-            }
-            throw new AuthenticationError('You need to be logged in!')
-        },
-
-        listings: async () => {
-
-
-            return await Listing.find();
-        },
-        
-        checkout: async (parent, args, context) => {
-            const url = new URL(context.headers.referer).origin;
-            const order = new Order({ listings: args.listings });
-            const line_items = [];
-
-            const { listings } = await order.populate('listings');
-
-            for (let i = 0; i < listings.length; i++) {
-                const listing = await stripe.products.create({
-                    name: listings[i].title,
-                    description: listings[i].description,
-                    images: [`${url}/images/${listings[i].image}`]
-                });
-
-                //Images need to in public/images
-
-                const price = await stripe.prices.create({
-                    product: listing.id,
-                    unit_amount: listings[i].price * 100,
-                    currency: 'usd',
-                });
-
-                line_items.push({
-                    price: price.id,
-                    quantity: 1
-                });
-            }
-
-            const session = await stripe.checkout.sessions.create({
-                payment_method_types: ['card'],
-                line_items,
-                mode: 'payment',
-                success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${url}/`
-            });
-
-            return { session: session.id };
-        }
+  Query: {
+    user: async (parent, args, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id });
+      }
+      throw new AuthenticationError("You need to be logged in!");
     },
 
-    Mutation: {
-        // Create user
-        addListing: async (parent, args, context) => {
-            if (context.user) {
-                const listing = new Listing({args})
-                await User.findOneAndUpdate(context.user._id, {$push: {listings: listing}}) 
-                return listing
-            }
-        },
-        addUser: async (parent, args) => {
-            const user = await User.create(args)
-            const token = signToken(user);
-            return { token, user };
+    listings: async () => {
+      return await Listing.find().populate("user");
+    },
 
-        },
-        loginUser: async (parent, { email, password }) => {
-            const user = await User.findOne({ email });
+    checkout: async (parent, args, context) => {
+      const url = new URL(context.headers.referer).origin;
+      const order = new Order({ listings: args.listings });
+      const line_items = [];
 
-            if (!user) {
-                throw new AuthenticationError('No user found with this email address')
-            }
+      const { listings } = await order.populate("listings");
 
-            const correctPw = await user.isCorrectPassword(password);
+      for (let i = 0; i < listings.length; i++) {
+        const listing = await stripe.products.create({
+          name: listings[i].title,
+          description: listings[i].description,
+          images: [`${url}/images/${listings[i].image}`],
+        });
 
-            if (!correctPw) {
-                throw new AuthenticationError('Incorrect credentials');
+        //Images need to in public/images
 
-            }
+        const price = await stripe.prices.create({
+          product: listing.id,
+          unit_amount: listings[i].price * 100,
+          currency: "usd",
+        });
 
-            const token = signToken(user);
-            return { token, user };
-        },
-        addOrder: async (parent, {listings}, context) => {
-            if (context.user) {
-              const order = new Order({listings });
-      
-              await User.findByIdAndUpdate(context.user._id, { $push: { orders: order } });
-      
-              return order;
-            }
-      
-            throw new AuthenticationError('Not logged in');
-          },
+        line_items.push({
+          price: price.id,
+          quantity: 1,
+        });
+      }
 
-    }
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items,
+        mode: "payment",
+        success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${url}/`,
+      });
 
-}
+      return { session: session.id };
+    },
+  },
 
-module.exports = resolvers; 
+  Mutation: {
+    // Create user
+    addListing: async (parent, args, context) => {
+      if (context.user) {
+        const listing = new Listing({ args });
+        await User.findOneAndUpdate(context.user._id, {
+          $push: { listings: listing },
+        });
+        return listing;
+      }
+    },
+    addUser: async (parent, args) => {
+      const user = await User.create(args);
+      const token = signToken(user);
+      return { token, user };
+    },
+    loginUser: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        throw new AuthenticationError("No user found with this email address");
+      }
+
+      const correctPw = await user.isCorrectPassword(password);
+
+      if (!correctPw) {
+        throw new AuthenticationError("Incorrect credentials");
+      }
+
+      const token = signToken(user);
+      return { token, user };
+    },
+    addOrder: async (parent, { listings }, context) => {
+      if (context.user) {
+        const order = new Order({ listings });
+
+        await User.findByIdAndUpdate(context.user._id, {
+          $push: { orders: order },
+        });
+
+        return order;
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+  },
+};
+
+module.exports = resolvers;
