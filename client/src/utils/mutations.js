@@ -26,7 +26,13 @@ mutation loginUser($email: String!, $password: String!) {
 `;
 
 export const ADD_LISTING = gql`
-mutation addListing($listings: [ID]!) {
-  addListing(listings: $listings)
+mutation addListing($newListing: ListingInput!) {
+  addListing(newListing: $newListing) 
+  {
+    title
+    description
+    price
+    
+  }
 }
 `;

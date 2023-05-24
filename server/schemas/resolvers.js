@@ -69,9 +69,16 @@ const resolvers = {
     addListing: async (parent, {newListing}, context) => {
       console.log(context.user);
       // if (context.user) {
-          const listing = Listing.create(newListing)
-          // await User.findByIdAndUpdate(context.user._id, {$push: {listings: listing._id}}) 
+        try {
+          const listing = await Listing.create(newListing)
           return listing
+
+        } catch (error) {
+
+          throw new Error(error)
+        }
+          
+          // await User.findByIdAndUpdate(context.user._id, {$push: {listings: listing._id}}) 
       // }
   },
     addUser: async (parent, args) => {

@@ -37,10 +37,10 @@
 //     .querySelector('.new-listing-form')
 //     .addEventListener('submit', newFormHandler);
 import { useStoreContext } from '../utils/GlobalState';
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import formatDate from "../utils/helpers";
-import { useQuery } from "@apollo/client";
-import { GET_LISTINGS } from "../utils/queries";
+import { useQuery, useMutation } from "@apollo/client";
+// import { GET_LISTINGS } from "../utils/queries";
 import { ADD_LISTING } from "../utils/mutations";
 import Auth from "../utils/auth";
 import { idbPromise } from '../utils/helpers';
@@ -50,35 +50,71 @@ import { UPDATE_LISTINGS } from "../utils/actions";
 
 
 function Profile() {
-    const [ state, dispatch ] = useStoreContext();
-    const { loading, data, error }  = useQuery(GET_LISTINGS)
-    console.log(data)
+    const [state, dispatch] = useStoreContext();
+    const [formState, setFormState] = useState({ title: "", price: "", description: "" })
+    const { loading, data } = useQuery(GET_LISTINGS)
+    const [addListing, { error }] = useMutation(ADD_LISTING)
+
+    // create a piece of state for listings
     
+
+
+
+    const createListing = async (event) => {
+        event.preventDefault()
+        // prevents the server from posting using restful APIs
+        console.log(formState)
+        try {
+            const addedListing = await addListing({
+                variables: {
+                    newListing: {
+                        ...formState,
+                        price: JSON.parse(formState.price)
+                    }
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+
+    const handleChange = (event) => {
+        console.log(event.target.value)
+        setFormState({
+            ...formState,
+            [event.target.name]: event.target.value
+        })
+        console.log(formState)
+    }
     useEffect(() => {
         console.log('test');
         if (data) {
             console.log(data);
-          dispatch({
-            type: UPDATE_LISTINGS,
-            listings: data.listings,
-          });
-          data.listings.forEach((listing) => {
-            idbPromise('listings', 'put', listing);
-          });
-        } else if (!loading) {
-          idbPromise('listings', 'get').then((listings) => {
             dispatch({
-              type: UPDATE_LISTINGS,
-              listings: listings,
+                type: UPDATE_LISTINGS,
+                listings: data.listings,
             });
-          });
+            data.listings.forEach((listing) => {
+                idbPromise('listings', 'put', listing);
+            });
+        } else if (!loading) {
+            idbPromise('listings', 'get').then((listings) => {
+                dispatch({
+                    type: UPDATE_LISTINGS,
+                    listings: listings,
+                });
+            });
         }
-      }, [data, loading, dispatch]);
-       
-      if (error) {
+    }, [data, loading, dispatch]);
+
+    if (error) {
         console.log(error);
         return <div>Error!</div>;
-      }
+    }
+
+
 
     const listings = []
 
@@ -87,7 +123,7 @@ function Profile() {
             <div>
                 <div className="row">
                     <div className="col-auto ms-1">
-                        <h2>Welcome, {data.listings[0].user.username}!</h2>
+                        {/* <h2>Welcome, {data.listings[0].user.username}!</h2> */}
                     </div>
                 </div>
 
@@ -95,7 +131,7 @@ function Profile() {
                     <div className="col-8 text-center">
                         <h3>Create a New Listing:</h3>
 
-                        <form className="form new-listing-form container m-0">
+                        <form onSubmit={createListing} className="form new-listing-form container m-0">
                             <div className="form-group my-3">
                                 <label
                                     htmlFor="listing-title"
@@ -107,7 +143,10 @@ function Profile() {
                                     className="form-input form-control"
                                     type="text"
                                     id="listing-title"
-                                    name="listing-title"
+                                    name="title"
+                                    value={formState.title}
+                                    onChange={handleChange}
+
                                 />
                             </div>
                             <div className="form-group my-3">
@@ -116,7 +155,9 @@ function Profile() {
                                     className="form-input form-control"
                                     type="number"
                                     id="listing-price"
-                                    name="listing-price"
+                                    name="price"
+                                    value={formState.price}
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div className="form-group my-3">
@@ -126,15 +167,17 @@ function Profile() {
                                 <textarea
                                     className="form-input form-control"
                                     id="listing-desc"
-                                    name="listing-desc"
+                                    name="description"
+                                    value={formState.description}
+                                    onChange={handleChange}
                                 ></textarea>
                             </div>
-                            <div
+                            {/* <div
                                 method="POST"
                                 action="/profile"
                                 encType="multipart/form-data"
                                 className="my-3"
-                            ></div>
+                            ></div> */}
                             <input
                                 type="file"
                                 name="Image"
@@ -156,7 +199,7 @@ function Profile() {
 
                 <h3 className="text-center">Your Current Listings:</h3>
 
-                {state?.listings.length >0 && state?.listings.map((listing) => (
+                {state?.listings.length > 0 && state?.listings.map((listing) => (
                     <div
                         key={listing.id}
                         className="container-fluid d-flex justify-content-center col-8"
@@ -165,19 +208,19 @@ function Profile() {
                             <div className="row g-0">
                                 <div className="col-md-4">
                                     {/* <a href={`/api/listings/${listing.id}`}> */}
-                                        <img
-                                            src={listing.image}
-                                            className="img-fluid rounded-start object-fit mx-auto d-block"
-                                            alt=""
-                                        />
+                                    <img
+                                        src={listing.image}
+                                        className="img-fluid rounded-start object-fit mx-auto d-block"
+                                        alt=""
+                                    />
                                     {/* </a> */}
                                 </div>
                                 <div className="col-md-8">
                                     <div className="card-body">
                                         {/* <a href={`/api/listings/${listing.id}`}> */}
-                                            <h5 className="card-title">
-                                                {listing.title}
-                                            </h5>
+                                        <h5 className="card-title">
+                                            {listing.title}
+                                        </h5>
                                         {/* </a> */}
 
                                         {listing.sold ? (
