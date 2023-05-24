@@ -36,23 +36,50 @@
 // document
 //     .querySelector('.new-listing-form')
 //     .addEventListener('submit', newFormHandler);
-
-import React from "react";
+import { useStoreContext } from '../utils/GlobalState';
+import React, { useEffect } from "react";
 import formatDate from "../utils/helpers";
 import { useQuery } from "@apollo/client";
-import { GET_USER } from "../utils/queries";
+import { GET_LISTINGS } from "../utils/queries";
 import { ADD_LISTING } from "../utils/mutations";
 import Auth from "../utils/auth";
+import { idbPromise } from '../utils/helpers';
+import { UPDATE_LISTINGS } from "../utils/actions";
 
 
 
 
 function Profile() {
-    const { loading, data }  = useQuery(GET_USER)
-
-  const userData = data?.user || {};
-    console.log(userData)
+    const [ state, dispatch ] = useStoreContext();
+    const { loading, data, error }  = useQuery(GET_LISTINGS)
+    console.log(data)
     
+    useEffect(() => {
+        console.log('test');
+        if (data) {
+            console.log(data);
+          dispatch({
+            type: UPDATE_LISTINGS,
+            listings: data.listings,
+          });
+          data.listings.forEach((listing) => {
+            idbPromise('listings', 'put', listing);
+          });
+        } else if (!loading) {
+          idbPromise('listings', 'get').then((listings) => {
+            dispatch({
+              type: UPDATE_LISTINGS,
+              listings: listings,
+            });
+          });
+        }
+      }, [data, loading, dispatch]);
+       
+      if (error) {
+        console.log(error);
+        return <div>Error!</div>;
+      }
+
     const listings = []
 
     return (
@@ -60,7 +87,7 @@ function Profile() {
             <div>
                 <div className="row">
                     <div className="col-auto ms-1">
-                        <h2>Welcome, {userData?.username}!</h2>
+                        <h2>Welcome, {data.listings[0].user.username}!</h2>
                     </div>
                 </div>
 
@@ -129,7 +156,7 @@ function Profile() {
 
                 <h3 className="text-center">Your Current Listings:</h3>
 
-                {userData?.listings.length >0 && userData?.listings.map((listing) => (
+                {state?.listings.length >0 && state?.listings.map((listing) => (
                     <div
                         key={listing.id}
                         className="container-fluid d-flex justify-content-center col-8"

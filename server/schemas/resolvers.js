@@ -22,6 +22,7 @@ const resolvers = {
     listings: async () => {
       return await Listing.find().populate("user");
     },
+        
 
     checkout: async (parent, args, context) => {
       const url = new URL(context.headers.referer).origin;
@@ -65,20 +66,19 @@ const resolvers = {
 
   Mutation: {
     // Create user
-    addListing: async (parent, args, context) => {
-      if (context.user) {
-        const listing = new Listing({ args });
-        await User.findOneAndUpdate(context.user._id, {
-          $push: { listings: listing },
-        });
-        return listing;
-      }
-    },
+    addListing: async (parent, {newListing}, context) => {
+      console.log(context.user);
+      // if (context.user) {
+          const listing = Listing.create(newListing)
+          // await User.findByIdAndUpdate(context.user._id, {$push: {listings: listing._id}}) 
+          return listing
+      // }
+  },
     addUser: async (parent, args) => {
-      const user = await User.create(args);
+      const user = await User.create(args)
       const token = signToken(user);
       return { token, user };
-    },
+  },
     loginUser: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
