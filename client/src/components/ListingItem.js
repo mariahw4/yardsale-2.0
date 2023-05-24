@@ -6,6 +6,7 @@ import { ADD_TO_CART, UPDATE_CART_QUANTITY } from "../utils/actions";
 import { idbPromise } from "../utils/helpers";
 import Auth from "../utils/auth";
 import formatDate from "../utils/helpers";
+import Button from 'react-bootstrap/Button';
 
 function ListingItem(item) {
   const [state, dispatch] = useStoreContext();
@@ -89,7 +90,9 @@ function ListingItem(item) {
                             {formatDate(date_created)}
                         </small>
                     </p>
-                    <button onClick={addToCart}>Add to cart</button>
+                    <Button variant="primary" onClick={addToCart}>Add to Cart</Button>{' '}
+                    <Button variant="danger">Flag</Button>{' '}
+                    
                 </div>
             </div>
         </div>
