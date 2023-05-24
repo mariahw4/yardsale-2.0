@@ -3,40 +3,37 @@ const { Schema, model } = require("mongoose");
 
 // class Listing extends Model {}
 
-const listingSchema = new Schema ({ 
-  
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  image: {
-    type: String,
-    // required: true,
-  },
-  date_created: {
-    type: Date,
-    required: false,
-    default: Date.now,
-  },
-  user_id: {
-    type: Number,
-    references: {
-      model: "user",
-      key: "id",
+const listingSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
     },
-  },
-  sold: {
-    type: Boolean,
-    default: false,
-  },
+    description: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    image: {
+      type: String,
+      // required: true,
+    },
+    date_created: {
+      type: Date,
+      required: false,
+      default: Date.now,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    sold: {
+      type: Boolean,
+      default: false,
+    },
     // id: {
     //   type: DataTypes.INTEGER,
     //   allowNull: false,
@@ -89,5 +86,5 @@ const listingSchema = new Schema ({
   }
 );
 
-const Listing = model ('Listing', listingSchema)
+const Listing = model("Listing", listingSchema);
 module.exports = Listing;

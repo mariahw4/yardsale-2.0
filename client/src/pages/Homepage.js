@@ -1,39 +1,35 @@
 import React, { useState, useEffect } from "react";
-import ListingItem from '../components/ListingItem';
-import { useStoreContext } from '../utils/GlobalState';
+import ListingItem from "../components/ListingItem";
+import { useStoreContext } from "../utils/GlobalState";
 import { useQuery } from "@apollo/client";
 import { GET_LISTINGS } from "../utils/queries";
-import { idbPromise } from '../utils/helpers';
+import { idbPromise } from "../utils/helpers";
 import { UPDATE_LISTINGS } from "../utils/actions";
-import spinner from '../assets/spinner.gif'
-import Cart from '../components/Cart'
+import spinner from "../assets/spinner.gif";
+import Cart from "../components/Cart";
 import Auth from "../utils/auth";
 import formatDate from "../utils/helpers";
 
 function HomepageHandler() {
-    const [ state, dispatch ] = useStoreContext();
-    const { loading, data, error }  = useQuery(GET_LISTINGS)
-    console.log(data)
-   
-    // const [state, dispatch] = useStoreContext();
+  const [state, dispatch] = useStoreContext();
+  const { loading, data, error } = useQuery(GET_LISTINGS);
+  console.log(data);
 
-   
-
-  
+  // const [state, dispatch] = useStoreContext();
 
   useEffect(() => {
-    console.log('test');
+    console.log("test");
     if (data) {
-        console.log(data);
+      console.log(data);
       dispatch({
         type: UPDATE_LISTINGS,
         listings: data.listings,
       });
       data.listings.forEach((listing) => {
-        idbPromise('listings', 'put', listing);
+        idbPromise("listings", "put", listing);
       });
     } else if (!loading) {
-      idbPromise('listings', 'get').then((listings) => {
+      idbPromise("listings", "get").then((listings) => {
         dispatch({
           type: UPDATE_LISTINGS,
           listings: listings,
@@ -41,51 +37,53 @@ function HomepageHandler() {
       });
     }
   }, [data, loading, dispatch]);
-   
+
   if (error) {
     console.log(error);
     return <div>Error!</div>;
   }
-// setHomeListings(listingData)
+  // setHomeListings(listingData)
 
-    // const [showAlert, setShowAlert] = useState(false);
-    // useEffect(() => {
-    //     if (error) {
-    //         console.log(error);
-    //         setShowAlert(true);
-    //     } else {
-    //         setShowAlert(false);
-    //     }
-    // }, [error]);
+  // const [showAlert, setShowAlert] = useState(false);
+  // useEffect(() => {
+  //     if (error) {
+  //         console.log(error);
+  //         setShowAlert(true);
+  //     } else {
+  //         setShowAlert(false);
+  //     }
+  // }, [error]);
 
-   const listings = []
+  const listings = [];
 
-    return (
-        <>
-            <div className="my-2">
-                <Cart/>
-      <h2>Our Products:</h2>
-      {state.listings.length ? (
-        <div className="flex-row">
-          {state.listings.map((listing) => (
-            <ListingItem
-              key={listing._id}
-              _id={listing._id}
-              image={listing.image}
-              title={listing.title}
-              description={listing.description}
-              price={listing.price}
-              quantity={listing.quantity}
-            />
-          ))}
-        </div>
-      ) : (
-        <h3>You haven't added any products yet!</h3>
-      )}
-      {loading ? <img src={spinner} alt="loading" /> : null}
-    </div>
-        </>
-    );
-};
+  return (
+    <>
+      <div className="my-2">
+        <Cart />
+        <h2>Our Products:</h2>
+        {state.listings.length ? (
+          <div className="flex-row">
+            {state.listings.map((listing) => (
+              <ListingItem
+                key={listing._id}
+                _id={listing._id}
+                image={listing.image}
+                title={listing.title}
+                description={listing.description}
+                price={listing.price}
+                quantity={listing.quantity}
+                date_created={listing.date_created}
+                username={listing.user.username}
+              />
+            ))}
+          </div>
+        ) : (
+          <h3>You haven't added any products yet!</h3>
+        )}
+        {loading ? <img src={spinner} alt="loading" /> : null}
+      </div>
+    </>
+  );
+}
 
 export default HomepageHandler;
