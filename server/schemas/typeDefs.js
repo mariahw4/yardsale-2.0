@@ -38,6 +38,13 @@ const typeDefs = gql`
     price: Float
   }
 
+  input ListingInput {
+    title: String
+    description: String
+    image: String
+    price: Float
+  }
+
   type Checkout {
     session: ID
   }
