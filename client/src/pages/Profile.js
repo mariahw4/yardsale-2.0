@@ -167,7 +167,6 @@ function Profile() {
                                     id="listing-price"
                                     name="price"
                                     min="0"
-                                    style={{zIndex: 999}}
                                     value={formState.price}
                                     onChange={handleChange}
                                 />
