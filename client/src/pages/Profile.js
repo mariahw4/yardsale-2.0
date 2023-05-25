@@ -166,6 +166,7 @@ function Profile() {
                                     type="number"
                                     id="listing-price"
                                     name="price"
+                                    min="0"
                                     value={formState.price}
                                     onChange={handleChange}
                                 />
