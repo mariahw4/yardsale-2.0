@@ -5,7 +5,9 @@ const typeDefs = gql`
     _id: ID!
     username: String
     email: String!
+    listings: [Listing]
   }
+
 
   type Auth {
     token: ID!
@@ -29,6 +31,7 @@ const typeDefs = gql`
     price: Float
     date_created: Date
     user: User
+    
   }
 
   input ListingInput {
@@ -36,14 +39,9 @@ const typeDefs = gql`
     description: String
     image: String
     price: Float
+    
   }
 
-  input ListingInput {
-    title: String
-    description: String
-    image: String
-    price: Float
-  }
 
   type Checkout {
     session: ID
@@ -53,6 +51,7 @@ const typeDefs = gql`
     user: User
     checkout(listings: [ID]!): Checkout
     listings: [Listing]
+    profileListings: [Listing]
 }
 
   type Mutation {

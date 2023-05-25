@@ -6,6 +6,7 @@ const { sign } = require("jsonwebtoken");
 const stripe = require("stripe")(
   "sk_test_51N8oPZGvqFuPYelvE6eMtck6VhzFo5ZWNb2OfbwLUskyZCeGF7Ii2z9ydScJISQXRNZmKQV3eqzORZQlYKAgAWvl00bAHTknrH"
 );
+const { ObjectId } = require('mongodb')
 
 // HINT
 // Use the functionality in the user-controller.js as a guide.
@@ -22,6 +23,10 @@ const resolvers = {
     listings: async () => {
       return await Listing.find().populate("user");
     },
+    
+    // profileListings: async () => {
+    //   return await Listing.find().populate("user");
+    // },
         
 
     checkout: async (parent, args, context) => {
@@ -68,18 +73,21 @@ const resolvers = {
     // Create user
     addListing: async (parent, {newListing}, context) => {
       console.log(context.user);
-      // if (context.user) {
+      if (context.user) {
         try {
+          const user = await User.findById(context.user._id)
+          newListing.user = user
+
           const listing = await Listing.create(newListing)
           return listing
-
+          
         } catch (error) {
 
           throw new Error(error)
         }
           
           // await User.findByIdAndUpdate(context.user._id, {$push: {listings: listing._id}}) 
-      // }
+      }
   },
     addUser: async (parent, args) => {
       const user = await User.create(args)
