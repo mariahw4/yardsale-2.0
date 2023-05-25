@@ -52,12 +52,11 @@ import { UPDATE_LISTINGS } from "../utils/actions";
 function Profile() {
     const [state, dispatch] = useStoreContext();
     const [formState, setFormState] = useState({ title: "", price: "", description: "" })
-    const { loading, data } = useQuery(GET_LISTINGS)
+    const { loading, refetch, data } = useQuery(GET_LISTINGS)
     const [addListing, { error }] = useMutation(ADD_LISTING)
 
     // create a piece of state for listings
     
-
 
 
     const createListing = async (event) => {
@@ -73,6 +72,7 @@ function Profile() {
                     }
                 }
             })
+            refetch()
         } catch (error) {
             console.log(error)
         }
@@ -90,13 +90,23 @@ function Profile() {
     }
     useEffect(() => {
         console.log('test');
+        console.log(data);
+        console.log(loading);
+        
+        
+        const userObj = Auth.getProfile()
+        console.log(userObj)
+
         if (data) {
             console.log(data);
+            const filteredListings = data.listings.filter(listing => {
+                return listing.user._id === userObj.data._id
+            })
             dispatch({
                 type: UPDATE_LISTINGS,
-                listings: data.listings,
+                listings: filteredListings,
             });
-            data.listings.forEach((listing) => {
+            filteredListings.forEach((listing) => {
                 idbPromise('listings', 'put', listing);
             });
         } else if (!loading) {
@@ -201,7 +211,7 @@ function Profile() {
 
                 {state?.listings.length > 0 && state?.listings.map((listing) => (
                     <div
-                        key={listing.id}
+                        key={listing._id}
                         className="container-fluid d-flex justify-content-center col-8"
                     >
                         <div className="card flex-fill mb-3">
