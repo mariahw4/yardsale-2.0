@@ -73,7 +73,7 @@ function HomepageHandler() {
                 price={listing.price}
                 quantity={listing.quantity}
                 date_created={listing.date_created}
-                username={listing.username}
+                username={listing?.user?.username}
               />
             ))}
           </div>
