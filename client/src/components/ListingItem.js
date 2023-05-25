@@ -54,7 +54,7 @@ function ListingItem(item) {
 >
     <div
         className="card mb-3 col-7 my-3"
-        style={{ maxWidth: "70%" }}
+        style={{ maxWidth: "70%", zIndex: 0}}
     >
         <div className="row g-0">
             <div className="col-md-4">
