@@ -7,6 +7,7 @@ const CartItem = ({ item }) => {
 
   const [, dispatch] = useStoreContext();
 
+  // Removes item from cart
   const removeFromCart = item => {
     dispatch({
       type: REMOVE_FROM_CART,
@@ -26,6 +27,8 @@ const CartItem = ({ item }) => {
       idbPromise('cart', 'delete', { ...item });
 
     } else {
+
+      // Updates cart quantity
       dispatch({
         type: UPDATE_CART_QUANTITY,
         _id: item._id,
@@ -36,6 +39,7 @@ const CartItem = ({ item }) => {
     }
   }
 
+  // renders the individual cart items
   return (
     <div className="flex-row">
       <div>

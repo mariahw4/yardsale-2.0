@@ -6,7 +6,8 @@ import Login from './LoginForm';
 
 import Auth from '../utils/auth';
 
-// changed react compenent file names to capitals
+
+// Displays navigation bar
 
 const AppNavbar = () => {
   // set modal display state

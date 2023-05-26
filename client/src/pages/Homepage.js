@@ -10,12 +10,13 @@ import Cart from "../components/Cart";
 import Auth from "../utils/auth";
 import formatDate from "../utils/helpers";
 
+// Updates homepage depending on user input
 function HomepageHandler() {
   const [state, dispatch] = useStoreContext();
   const { loading, data, error } = useQuery(GET_LISTINGS);
   console.log(data);
 
-  // const [state, dispatch] = useStoreContext();
+ 
 
   useEffect(() => {
     console.log("test");
@@ -42,20 +43,10 @@ function HomepageHandler() {
     console.log(error);
     return <div>Error!</div>;
   }
-  // setHomeListings(listingData)
-
-  // const [showAlert, setShowAlert] = useState(false);
-  // useEffect(() => {
-  //     if (error) {
-  //         console.log(error);
-  //         setShowAlert(true);
-  //     } else {
-  //         setShowAlert(false);
-  //     }
-  // }, [error]);
 
   const listings = [];
 
+  // maps thru listings on homepage to display each listing's info
   return (
     <>
       <div className="my-2">

@@ -8,8 +8,6 @@ const stripe = require("stripe")(
 );
 const { ObjectId } = require('mongodb')
 
-// HINT
-// Use the functionality in the user-controller.js as a guide.
 
 const resolvers = {
   Query: {
@@ -24,9 +22,6 @@ const resolvers = {
       return await Listing.find().populate("user");
     },
     
-    // profileListings: async () => {
-    //   return await Listing.find().populate("user");
-    // },
         
 
     checkout: async (parent, args, context) => {
@@ -86,7 +81,6 @@ const resolvers = {
           throw new Error(error)
         }
           
-          // await User.findByIdAndUpdate(context.user._id, {$push: {listings: listing._id}}) 
       }
   },
     addUser: async (parent, args) => {

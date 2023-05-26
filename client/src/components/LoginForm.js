@@ -6,7 +6,7 @@ import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
-// changed file to Login.js
+// handles login user info
 const LoginFormHandler =  (event) => {
   
 
@@ -57,67 +57,9 @@ const LoginFormHandler =  (event) => {
     });
   };
 
-  // Collect values from the login form
-  // const email = document.querySelector('#email-login').value.trim();
-  // const password = document.querySelector('#password-login').value.trim();
-
-//   if (email && password) {
-//     // Send a POST request to the API endpoint
-//     const response = await fetch('/api/users/login', {
-//       method: 'POST',
-//       body: JSON.stringify({ email, password }),
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//     console.log("response", response);
-//     if (response.ok) {
-//       // If successful, redirect the browser to the dashboard page
-//       document.location.replace('/profile');
-//     } else {
-//       alert(response.statusText);
-//     }
-//   }
-// };
-
-
-// document
-//   .querySelector('.login-form')
-//   .addEventListener('submit', loginFormHandler);
+// Renders login form
 return (
  <>
-  {/* <div className="container-sm p-3 text-primary-emphasis bg-primary-subtle border border-4 border-primary-subtle rounded-3" >
-  <div className="container text-center">
-      <div className="row align-items-start">
-          <div className="col">
-              <h2 className="page-title">Log In</h2>
-          <form className="login-form">
-              <div className="mb-3">
-                  <div className="form-group">
-                  <label for="email-login" className="form-label">Email</label>
-                  <input
-                      type="email"
-                      className="form-control"
-                      id="email-login"/>
-                  </div>
-              </div>
-              <div className="mb-3">
-                  <div className="form-group">
-                  <label for="password-login" className="form-label">Password</label>
-                  <input
-                      type="password"
-                      className="form-control"
-                      id="password-login"
-                  />
-                  </div>
-              </div>
-              <div className="form-group">
-                  <button className="btn btn-primary" type="submit">Log In</button>
-              </div>
-          </form>
-      </div>
-      <div className="vr"></div>
-      </div>
-  </div>
-</div> */}
  <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
         <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
           Something went wrong with your login credentials!
