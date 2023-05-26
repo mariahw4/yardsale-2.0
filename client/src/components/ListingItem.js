@@ -8,6 +8,7 @@ import Auth from "../utils/auth";
 import formatDate from "../utils/helpers";
 import Button from 'react-bootstrap/Button';
 
+// renders individual listing on the homepage
 function ListingItem(item) {
   const [state, dispatch] = useStoreContext();
 

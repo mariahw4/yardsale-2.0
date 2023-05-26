@@ -48,16 +48,13 @@ import { UPDATE_LISTINGS } from "../utils/actions";
 
 
 
+// Updates profile page depending on user info 
 
 function Profile() {
     const [state, dispatch] = useStoreContext();
     const [formState, setFormState] = useState({ title: "", price: "", description: "" })
     const { loading, refetch, data } = useQuery(GET_LISTINGS)
     const [addListing, { error }] = useMutation(ADD_LISTING)
-
-    // create a piece of state for listings
-    
-
 
     const createListing = async (event) => {
         event.preventDefault()
@@ -76,8 +73,6 @@ function Profile() {
         } catch (error) {
             console.log(error)
         }
-
-
     }
 
     const handleChange = (event) => {
@@ -88,12 +83,13 @@ function Profile() {
         })
         console.log(formState)
     }
+
     useEffect(() => {
         console.log('test');
         console.log(data);
         console.log(loading);
-        
-        
+
+
         const userObj = Auth.getProfile()
         console.log(userObj)
 
@@ -124,16 +120,15 @@ function Profile() {
         return <div>Error!</div>;
     }
 
-
-
     const listings = []
 
+    // Renders the "Create a Listing" form
     return (
         <>
             <div>
                 <div className="row">
                     <div className="col-auto ms-1">
-                        {/* <h2>Welcome, {data.listings[0].user.username}!</h2> */}
+                        
                     </div>
                 </div>
 
@@ -183,12 +178,6 @@ function Profile() {
                                     onChange={handleChange}
                                 ></textarea>
                             </div>
-                            {/* <div
-                                method="POST"
-                                action="/profile"
-                                encType="multipart/form-data"
-                                className="my-3"
-                            ></div> */}
                             <input
                                 type="file"
                                 name="Image"
@@ -218,21 +207,18 @@ function Profile() {
                         <div className="card flex-fill mb-3">
                             <div className="row g-0">
                                 <div className="col-md-4">
-                                    {/* <a href={`/api/listings/${listing.id}`}> */}
                                     <img
                                         src={listing.image}
                                         className="img-fluid rounded-start object-fit mx-auto d-block"
                                         alt=""
                                     />
-                                    {/* </a> */}
+                                    
                                 </div>
                                 <div className="col-md-8">
                                     <div className="card-body">
-                                        {/* <a href={`/api/listings/${listing.id}`}> */}
                                         <h5 className="card-title">
                                             {listing.title}
                                         </h5>
-                                        {/* </a> */}
 
                                         {listing.sold ? (
                                             <h6 className="text-danger font-weight-bold">
