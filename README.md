@@ -1,6 +1,83 @@
-# Getting Started with Create React App
+# Yard Sale 2.0
+This project was designed to help users purchase premium items through a website where other users no longer need their items. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+By: Mariah Wear, David Lee, Sam Cott, Rances Rodriguez, Jordy Marquez
+
+## Table of contents
+
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+- [Author](#author)
+- [Acknowledgments](#acknowledgments)
+
+
+## Overview
+
+### The challenge
+The challenge was to work together within a single github repository to build a functional full-stack application utilizing React.
+
+## User Story
+```
+AS a buyer or seller of fine goods
+I WANT to be able to purchase used items as well as having the ability to sell my own items
+SO THAT i can continue to have the things i want and recycle the things I do not need
+```
+## Acceptance Criteria
+```
+GIVEN an interactive classifieds webpage 
+
+WHEN I view the home page
+THEN I see all the current for-sale listings
+
+WHEN I click create a listing
+THEN I can upload an image and item details which are posted to the site
+
+WHEN I view a listings detail
+THEN I see its image, price and description, and can click a button to purchase
+
+WHEN I click to purchase an item and I'm logged in
+THEN I see a modal to confirm or exit
+
+When I try to purchase and I'm logged out
+THEN I'm prompted to log in or sign up
+
+WHEN I confirm my purchase
+THEN the item is marked as sold and can no longer be purchased
+```
+
+### Screenshot
+
+Homepage:
+![homepage](./client/public/images/homepage-screenshot.png)
+Profile:
+![Profile](./client/public/images/profile-screenshot.png)
+Cart:
+![Cart](./client/public/images/cart-screenshot.png)
+Checkout Screen:
+![Checkout Screen](./client/public/images/stripe-checkout-screenshot.png)
+
+
+### Links
+
+- Solution URL: [Github Repo](https://github.com/mariahw4/yardsale-2.0)
+- Live Site URL: [Deployed on Heroku](https://yardsale-2-application.herokuapp.com/)
+
+## Our process
+
+### Built with
+
+- Semantic HTML5 markup
+- CSS custom properties
+- Mobile-first workflow
+- [React](https://reactjs.org/) - JS library
+- [Next.js](https://nextjs.org/) - React framework
+- [Styled Components](https://styled-components.com/) - For styles
 
 ## Available Scripts
 
@@ -29,42 +106,28 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### What we learned
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+We learned that it is fairly challening to convert an application from the MVC format into a full stack react app.  
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+### Continued development
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Future development plans include fixing image upload functionality, adding a delete and update listing button, finishing out the flag listing function so users can flag inappropriate listings they'd like the admin to remove.  
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Author
 
-### Analyzing the Bundle Size
+- [Sam Cott - Github Profile](https://github.com/samc995)
+- [David Lee - Github Profile](https://github.com/kpxcrew)
+- [Jordy Marquez - Github Profile](https://github.com/JordyMarquez)
+- [Mariah Wear - Github Profile](https://github.com/mariahw4)
+- [Rance Rodriguez - Github Profile](https://github.com/Caliza)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+## Acknowledgments
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+We want to thank our tutors and a big thanks to Mark and our TA's for the program and assistance on chasing bugs in this project!! 
